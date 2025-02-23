@@ -11,10 +11,6 @@ export const getUsers = async (_req, res) => {
 };
 
 export const getUserById = async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ message: 'Invalid user ID' });
-    }
-
     try {
         const user = await User.findById(req.params.id)
             .populate('thoughts')
@@ -46,10 +42,6 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ message: 'Invalid user ID' });
-    }
-
     try {
         const { username, email } = req.body;
 
@@ -59,6 +51,20 @@ export const updateUser = async (req, res) => {
 
         const updatedUser = await User.findByIdAndUpdate(req.params.id, { username, email }, { new: true });
         res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};
+
+export const deleteUser = async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
         res.status(400).json(err);
     }

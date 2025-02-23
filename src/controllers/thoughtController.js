@@ -55,3 +55,21 @@ export const updateThought = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const deleteThought = async (req, res) => {
+    try {
+        const thoughtToDelete = await Thought.findById(req.params.id);
+
+        if (!thoughtToDelete) {
+            return res.status(404).json({ message: 'Thought not found' });
+        }
+
+        await User.findByIdAndUpdate(thoughtToDelete.userId, { $pull: { thoughts: thoughtToDelete._id } });
+
+        await Thought.deleteOne({ _id: req.params.id });
+
+        res.status(200).json({ message: 'Thought deleted' });
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};

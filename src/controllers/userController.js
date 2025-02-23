@@ -29,3 +29,18 @@ export const getUserById = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const createUser = async (req, res) => {
+    try {
+        const { username, email } = req.body;
+
+        if (!username || !email) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const user = await User.create({ username, email });
+        res.status(201).json(user);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+}

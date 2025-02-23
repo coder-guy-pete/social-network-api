@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import ReactionSchema from './Reaction';
+import ReactionSchema from './Reaction.js';
 import { format } from 'date-fns';
 
 const ThoughtSchema = new Schema({

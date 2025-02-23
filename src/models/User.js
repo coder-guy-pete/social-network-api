@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, ObjectId } from 'mongoose';
 
 const validateEmail = function(email) {
     const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

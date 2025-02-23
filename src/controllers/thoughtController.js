@@ -73,3 +73,19 @@ export const deleteThought = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const addReaction = async (req, res) => {
+    try {
+        const { reactionBody, username } = req.body;
+
+        if (!reactionBody || !username) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const updatedThought = await Thought.findByIdAndUpdate(req.params.id, { $push: { reactions: { reactionBody, username } } }, { new: true });
+        res.status(200).json(updatedThought);
+    }
+    catch (err) {
+        res.status(400).json(err);
+    }
+};

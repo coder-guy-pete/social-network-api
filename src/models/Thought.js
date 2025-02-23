@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import ReactionSchema from './Reaction';
 import { format } from 'date-fns';
 
 const ThoughtSchema = new Schema({
@@ -16,7 +17,7 @@ const ThoughtSchema = new Schema({
         type: String,
         required: true
     },
-    reactions: [reactionSchema]
+    reactions: [ReactionSchema]
 });
 
 ThoughtSchema.virtual('reactionCount').get(function() {

@@ -93,3 +93,24 @@ export const addFriend = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const removeFriend = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id);
+        const friend = await User.findById(req.params.friendId);
+
+        if (!user || !friend) {
+            return res.status(404).json({ message: 'User or friend not found' });
+        }
+
+        if (!user.friends.includes(req.params.friendId)) {
+            return res.status(400).json({ message: 'Friend is not in friend list' });
+        }
+
+        user.friends = user.friends.filter((friend) => friend !== req.params.friendId);
+        await user.save();
+        res.status(200).json({ message: 'Friend removed successfully' });
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};

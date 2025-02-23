@@ -32,7 +32,15 @@ const seedUsers = async () => {
 
         const createdThoughts = await Thought.insertMany(thoughtsData);
 
-        // Add friends and thoughts to testUser1
+         // Reactions Data
+        const reactionsData = [
+            { reactionBody: 'Awesome!', username: createdUsers[1].username },
+            { reactionBody: 'Interesting...', username: createdUsers[2].username },
+            { reactionBody: 'I agree!', username: createdUsers[3].username },
+            { reactionBody: 'Nice thought!', username: createdUsers[0].username },
+        ];
+
+        // Add friends and thoughts to users
         await User.findByIdAndUpdate(createdUsers[0]._id, {
             $push: {
                 thoughts: createdThoughts[0]._id,
@@ -49,7 +57,6 @@ const seedUsers = async () => {
             },
         });
 
-        // Add friends and thoughts to testUser2
         await User.findByIdAndUpdate(createdUsers[1]._id, {
             $push: {
                 thoughts: createdThoughts[1]._id,
@@ -66,7 +73,6 @@ const seedUsers = async () => {
             },
         });
 
-        // Add friends and thoughts to john_doe
         await User.findByIdAndUpdate(createdUsers[2]._id, {
             $push: {
                 thoughts: createdThoughts[2]._id,
@@ -83,7 +89,6 @@ const seedUsers = async () => {
             },
         });
 
-        // Add friends and thoughts to jane_smith
         await User.findByIdAndUpdate(createdUsers[3]._id, {
             $push: {
                 thoughts: createdThoughts[3]._id,
@@ -100,17 +105,37 @@ const seedUsers = async () => {
             },
         });
 
-        // Add thoughts to alice
         await User.findByIdAndUpdate(createdUsers[4]._id, {
             $push: {
                 thoughts: createdThoughts[4]._id,
             },
         });
 
-        // Add thoughts to bob
         await User.findByIdAndUpdate(createdUsers[5]._id, {
             $push: {
                 thoughts: createdThoughts[5]._id,
+            },
+        });
+
+        // Add reactions to thoughts
+        await Thought.findByIdAndUpdate(createdThoughts[0]._id, {
+            $push: {
+                reactions: reactionsData[0],
+            },
+        });
+        await Thought.findByIdAndUpdate(createdThoughts[1]._id, {
+            $push: {
+                reactions: reactionsData[1],
+            },
+        });
+        await Thought.findByIdAndUpdate(createdThoughts[2]._id, {
+            $push: {
+                reactions: reactionsData[2],
+            },
+        });
+        await Thought.findByIdAndUpdate(createdThoughts[3]._id, {
+            $push: {
+                reactions: reactionsData[3],
             },
         });
 

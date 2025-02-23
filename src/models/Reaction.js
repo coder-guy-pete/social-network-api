@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 
 const ReactionSchema = new Schema({
     reactionId: {
-        type: ObjectId,
         default: new ObjectId()
     },
     reactionBody: {

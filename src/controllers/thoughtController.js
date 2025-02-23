@@ -40,3 +40,18 @@ export const createThought = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const updateThought = async (req, res) => {
+    try {
+        const { thoughtText } = req.body;
+
+        if (!thoughtText) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const updatedThought = await Thought.findByIdAndUpdate(req.params.id, { thoughtText }, { new: true });
+        res.status(200).json(updatedThought);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};

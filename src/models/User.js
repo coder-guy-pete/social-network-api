@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose';
+import { Schema, model, SchemaTypes } from 'mongoose';
 
 const validateEmail = function(email) {
     const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -20,19 +20,29 @@ const UserSchema = new Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address'],
     },
     thoughts: [{
-        type: ObjectId,
-        ref: 'Thought'
+        type: SchemaTypes.ObjectId,
+        ref: 'thought'
     }],
     friends: [{
-        type: ObjectId,
-        ref: 'User'
+        type: SchemaTypes.ObjectId,
+        ref: 'user'
     }]
+}, {
+    toJSON: {
+        virtuals: true,
+        versionKey: false,
+    },
+    toObject: {
+        virtuals: true,
+        versionKey: false,
+    },
+    id: false
 });
 
 UserSchema.virtual('friendCount').get(function() {
     return this.friends?.length;
 });
 
-const User = model('User', UserSchema);
+const User = model('user', UserSchema);
 
 export default User;

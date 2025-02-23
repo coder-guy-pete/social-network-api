@@ -28,6 +28,6 @@ ThoughtSchema.virtual('formattedDate').get(function() {
     return format(this.createdAt, 'MMMM do, yyyy [at] hh:mma');
 });
 
-const Thought = model('Thought', ThoughtSchema);
+const Thought = model('thought', ThoughtSchema);
 
 export default Thought;

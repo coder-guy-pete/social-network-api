@@ -43,4 +43,23 @@ export const createUser = async (req, res) => {
     } catch (err) {
         res.status(400).json(err);
     }
-}
+};
+
+export const updateUser = async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
+    try {
+        const { username, email } = req.body;
+
+        if (!username || !email) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, { username, email }, { new: true });
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};

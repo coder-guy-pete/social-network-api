@@ -89,3 +89,12 @@ export const addReaction = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
+export const deleteReaction = async (req, res) => {
+    try {
+        const updatedThought = await Thought.findByIdAndUpdate(req.params.id, { $pull: { reactions: { _id: req.params.reactionId } } }, { new: true });
+        res.status(200).json(updatedThought);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+};

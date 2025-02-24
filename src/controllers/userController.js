@@ -1,4 +1,20 @@
+import { format } from 'date-fns';
 import { User, Thought } from '../models/index.js';
+
+const formatUser = (user) => {
+    const userObject = user.toObject({ virtuals: true });
+    return {
+        ...userObject,
+        thoughts: userObject.thoughts.map(thought => ({
+            ...thought,
+            createdAt: thought.createdAt ? format(thought.createdAt, "MMM do, yyyy 'at' hh:mm a") : null,
+            reactions: thought.reactions && thought.reactions.length > 0 ? thought.reactions.map(reaction => ({
+                ...reaction,
+                createdAt: reaction.createdAt ? format(reaction.createdAt, "MMM do, yyyy 'at' hh:mm a") : null,
+            })) : [],
+        }))
+    };
+};
 
 export const getUsers = async (_req, res) => {
     try {
@@ -13,12 +29,12 @@ export const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
             .populate('thoughts')
-            .populate('friends');
+            .populate({ path: 'friends', select: '_id username email' });
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        res.status(200).json(formatUser(user));
     } catch (err) {
         console.error(err);
         res.status(400).json(err);

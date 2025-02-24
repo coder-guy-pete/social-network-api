@@ -17,15 +17,21 @@ const ThoughtSchema = new Schema({
         type: String,
         required: true
     },
-    reactions: [ReactionSchema]
+    reactions: [ReactionSchema],
+    }, {
+        toJSON: {
+            virtuals: true,
+            versionKey: false,
+        },
+        toObject: {
+            virtuals: true,
+            versionKey: false,
+        },
+        id: false
 });
 
 ThoughtSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
-});
-
-ThoughtSchema.virtual('formattedDate').get(function() {
-    return format(this.createdAt, 'MMMM do, yyyy [at] hh:mma');
 });
 
 const Thought = model('thought', ThoughtSchema);

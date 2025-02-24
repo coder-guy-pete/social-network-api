@@ -20,8 +20,4 @@ const ReactionSchema = new Schema({
     }
 });
 
-ReactionSchema.virtual('formattedDate').get(function() {
-    return format(this.createdAt, 'MMMM do, yyyy [at] hh:mma');
-});
-
 export default ReactionSchema;

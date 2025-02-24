@@ -90,7 +90,7 @@ export const deleteUser = async (req, res) => {
 
 export const addFriend = async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id);
+        const user = await User.findById(req.params.id);
         const friend = await User.findById(req.params.friendId);
 
         if (!user || !friend) {
@@ -101,8 +101,7 @@ export const addFriend = async (req, res) => {
             return res.status(400).json({ message: 'Friend is already in friend list' });
         }
 
-        user.friends.push(req.params.friendId);
-        await user.save();
+        await User.findByIdAndUpdate(req.params.id, { $push: { friends: req.params.friendId } });
         res.status(200).json({ message: 'Friend added successfully' });
     } catch (err) {
         res.status(400).json(err);
@@ -111,7 +110,7 @@ export const addFriend = async (req, res) => {
 
 export const removeFriend = async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id);
+        const user = await User.findById(req.params.id);
         const friend = await User.findById(req.params.friendId);
 
         if (!user || !friend) {
@@ -122,8 +121,7 @@ export const removeFriend = async (req, res) => {
             return res.status(400).json({ message: 'Friend is not in friend list' });
         }
 
-        user.friends = user.friends.filter((friend) => friend !== req.params.friendId);
-        await user.save();
+        await User.findByIdAndUpdate(req.params.id, { $pull: { friends: req.params.friendId } });
         res.status(200).json({ message: 'Friend removed successfully' });
     } catch (err) {
         res.status(400).json(err);
